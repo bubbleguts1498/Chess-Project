@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 
 public class Board {
 	Color currentColor = Color.white;
@@ -18,11 +19,14 @@ public class Board {
 				Piece piece = null;
 				if (row == 1 || row == 6) {
 					piece = Piece.pawn;
-				} else if ((row == 0 && col == 0) || (row == 0 && col == 7) || (row == 7 && col == 7) || (row == 7 && col == 0)) {
+				} else if ((row == 0 && col == 0) || (row == 0 && col == 7) || (row == 7 && col == 7)
+						|| (row == 7 && col == 0)) {
 					piece = Piece.rook;
-				} else if ((row == 0 && col == 1) || (row == 0 && col == 6) || (row == 7 && col == 1) || (row == 7 && col == 6)) {
+				} else if ((row == 0 && col == 1) || (row == 0 && col == 6) || (row == 7 && col == 1)
+						|| (row == 7 && col == 6)) {
 					piece = Piece.knight;
-				} else if ((row == 0 && col == 2) || (row == 0 && col == 5) || (row == 7 && col == 2) || (row == 7 && col == 5)) {
+				} else if ((row == 0 && col == 2) || (row == 0 && col == 5) || (row == 7 && col == 2)
+						|| (row == 7 && col == 5)) {
 					piece = Piece.bishop;
 				} else if ((row == 0 && col == 4) || (row == 7 && col == 4)) {
 					piece = Piece.king;
@@ -72,24 +76,103 @@ public class Board {
 			}
 			s += "\n";
 		}
-		// TODO Auto-generated method stub
 		return s;
 	}
 
 	public Color whichColorMoves() {
-		// TODO Auto-generated method stub
-		return null;
+		return currentColor;
 	}
 
 	public void processMove(Move move) {
-		// TODO Auto-generated method stub
+		squares[move.endRow][move.endCol].piece = squares[move.startRow][move.startCol].piece;
+		squares[move.endRow][move.endCol].color = squares[move.startRow][move.startCol].color;
+		squares[move.startRow][move.startCol].piece = null;
+		squares[move.startRow][move.startCol].color = null;
+		if (currentColor == Color.white) {
+			currentColor = Color.black;
+		} else {
+			currentColor = Color.white;
+		}
 
 	}
 
 	public List<Move> possibleMoves() {
+
+		List<Move> moves = new ArrayList<Move>();
+
+		for (int row = 0; row < squares.length; row++) {
+			for (int col = 0; col < squares.length; col++) {
+				Square startSquare = squares[row][col];
+
+				if (currentColor == startSquare.color) {
+					addPossibleMoves(row, col, startSquare.piece, moves);
+				}
+
+			}
+		}
+
+		return moves;
+	}
+
+	private void addPossibleMoves(int startRow, int startCol, Piece piece, List<Move> moves) {
+
+		if (piece == Piece.pawn) {
+			addPossiblePawnMoves(startRow, startCol, moves);
+		} else if (piece == Piece.rook) {
+			addPossibleRookMoves(startRow, startCol, moves);
+		} else if (piece == Piece.knight) {
+			addPossibleKnightMoves(startRow, startCol, moves);
+		} else if (piece == Piece.bishop) {
+			addPossibleBishopMoves(startRow, startCol, moves);
+		} else if (piece == Piece.king) {
+			addPossibleKingMoves(startRow, startCol, moves);
+		} else if (piece == Piece.queen) {
+			addPossibleQueenMoves(startRow, startCol, moves);
+		}
+	}
+
+	private void addPossibleQueenMoves(int startRow, int startCol, List<Move> moves) {
+
 		// TODO Auto-generated method stub
-		
-		return null;
+
+	}
+
+	private void addPossibleKingMoves(int startRow, int startCol, List<Move> moves) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void addPossibleBishopMoves(int startRow, int startCol, List<Move> moves) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void addPossibleKnightMoves(int startRow, int startCol, List<Move> moves) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void addPossibleRookMoves(int startRow, int startCol, List<Move> moves) {
+
+		// TODO Auto-generated method stub
+
+	}
+
+	private void addPossiblePawnMoves(int startRow, int startCol, List<Move> moves) {
+		if (currentColor == Color.white) {
+			if (startRow < 7 && squares[startRow + 1][startCol].piece == null) {
+				moves.add(new Move(startRow, startCol, startRow + 1, startCol));
+			}
+			// TODO add two-move forward
+			// TODO add capture diagonally
+		} else if (currentColor == Color.black) {
+			if (startRow > 0 && squares[startRow - 1][startCol].piece == null) {
+				moves.add(new Move(startRow, startCol, startRow - 1, startCol));
+			}
+			// TODO add two-move forward
+			// TODO add capture diagonally
+		}
+
 	}
 
 }
