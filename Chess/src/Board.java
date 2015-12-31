@@ -16,7 +16,19 @@ public class Board {
 					color = Color.black;
 				}
 				Piece piece = null;
-				//TODO set piece to Piece.king, Piece.queen, etc if in the right position. look at both row and col to figure it out
+				if (row == 1 || row == 6) {
+					piece = Piece.pawn;
+				} else if ((row == 0 && col == 0) || (row == 0 && col == 7) || (row == 7 && col == 7) || (row == 7 && col == 0)) {
+					piece = Piece.rook;
+				} else if ((row == 0 && col == 1) || (row == 0 && col == 6) || (row == 7 && col == 1) || (row == 7 && col == 6)) {
+					piece = Piece.knight;
+				} else if ((row == 0 && col == 2) || (row == 0 && col == 5) || (row == 7 && col == 2) || (row == 7 && col == 5)) {
+					piece = Piece.bishop;
+				} else if ((row == 0 && col == 4) || (row == 7 && col == 4)) {
+					piece = Piece.king;
+				} else if ((row == 0 && col == 3) || (row == 7 && col == 3)) {
+					piece = Piece.queen;
+				}
 				squares[row][col] = new Square(piece, color);
 			}
 		}
@@ -34,8 +46,34 @@ public class Board {
 	}
 
 	public String toString() {
+		String s = "";
+		for (int row = 0; row < squares.length; row++) {
+			for (int col = 0; col < squares.length; col++) {
+				Square square = squares[row][col];
+				String squareString = "-";
+				if (square.piece == Piece.pawn) {
+					squareString = "P";
+				} else if (square.piece == Piece.rook) {
+					squareString = "R";
+				} else if (square.piece == Piece.knight) {
+					squareString = "N";
+				} else if (square.piece == Piece.bishop) {
+					squareString = "B";
+				} else if (square.piece == Piece.king) {
+					squareString = "K";
+				} else if (square.piece == Piece.queen) {
+					squareString = "Q";
+				}
+				if (square.color == Color.black) {
+					squareString = squareString.toLowerCase();
+				}
+				s += squareString;
+				s += " ";
+			}
+			s += "\n";
+		}
 		// TODO Auto-generated method stub
-		return "";
+		return s;
 	}
 
 	public Color whichColorMoves() {
@@ -50,6 +88,7 @@ public class Board {
 
 	public List<Move> possibleMoves() {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
